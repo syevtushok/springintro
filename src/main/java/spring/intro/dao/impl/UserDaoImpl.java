@@ -3,7 +3,6 @@ package spring.intro.dao.impl;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import spring.intro.dao.UserDao;
 import spring.intro.models.User;
@@ -12,7 +11,6 @@ import spring.intro.models.User;
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
 
-    @Autowired
     public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
