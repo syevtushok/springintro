@@ -3,6 +3,7 @@ package spring.intro.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,12 +21,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String get(@PathVariable Long id) {
-        return userService.get(id).toString();
+    @GetMapping("/{id}")
+    public UserResponseDto get(@PathVariable Long id) {
+        User user = userService.get(id);
+        UserResponseDto userDto = new UserResponseDto();
+        userDto.setLogin(user.getLogin());
+        userDto.setPassword(user.getPassword());
+        return userDto;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public List<UserResponseDto> getAll() {
         List<UserResponseDto> usersDto = new ArrayList<>();
         for (User user : userService.listUsers()) {
