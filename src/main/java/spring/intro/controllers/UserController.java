@@ -1,7 +1,7 @@
 package spring.intro.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,20 +27,11 @@ public class UserController {
         return getUserResponseDto(user);
     }
 
-    private UserResponseDto getUserResponseDto(User user) {
-        UserResponseDto userDto = new UserResponseDto();
-        userDto.setLogin(user.getLogin());
-        userDto.setPassword(user.getPassword());
-        return userDto;
-    }
-
     @GetMapping("/")
     public List<UserResponseDto> getAll() {
-        List<UserResponseDto> usersDto = new ArrayList<>();
-        for (User user : userService.listUsers()) {
-            usersDto.add(getUserResponseDto(user));
-        }
-        return usersDto;
+        return userService.listUsers().stream()
+                .map(this::getUserResponseDto)
+                .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/inject", method = RequestMethod.GET)
@@ -49,5 +40,12 @@ public class UserController {
             userService.add(new User("user" + i, "pass" + i));
         }
         return "Good!";
+    }
+
+    private UserResponseDto getUserResponseDto(User user) {
+        UserResponseDto userDto = new UserResponseDto();
+        userDto.setLogin(user.getLogin());
+        userDto.setPassword(user.getPassword());
+        return userDto;
     }
 }
