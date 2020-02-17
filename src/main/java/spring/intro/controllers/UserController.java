@@ -24,6 +24,10 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponseDto get(@PathVariable Long id) {
         User user = userService.get(id);
+        return getUserResponseDto(user);
+    }
+
+    private UserResponseDto getUserResponseDto(User user) {
         UserResponseDto userDto = new UserResponseDto();
         userDto.setLogin(user.getLogin());
         userDto.setPassword(user.getPassword());
@@ -34,10 +38,7 @@ public class UserController {
     public List<UserResponseDto> getAll() {
         List<UserResponseDto> usersDto = new ArrayList<>();
         for (User user : userService.listUsers()) {
-            UserResponseDto userDto = new UserResponseDto();
-            userDto.setLogin(user.getLogin());
-            userDto.setPassword(user.getPassword());
-            usersDto.add(userDto);
+            usersDto.add(getUserResponseDto(user));
         }
         return usersDto;
     }
